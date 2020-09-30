@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css'
+
+export default function App() {
+
+	const [ type, setType ] = useState( 'users' )
+
+	return (
+		<div className="App mt-md-5">
+
+			<h1 className="mb-md-3">Русурс {type}</h1>
+			<button onClick={() => setType( 'users' )} className="btn btn-info mr-md-3">Пользователи</button>
+			<button onClick={() => setType( 'todos' )} className="btn btn-success mr-md-3">Todo</button>
+			<button onClick={() => setType( 'posts' )} className="btn btn-danger">Посты</button>
+		</div>
+	)
 }
-
-export default App;
