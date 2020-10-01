@@ -6,8 +6,17 @@ export default function App() {
 
 	const [ type, setType ] = useState( 'users' )
 	const [ data, setData ] = useState ( [] )
+	const [ pos, setPos] = useState({
+		x: 0,
+		y: 0
+	})
 
-	console.log(data)
+	const position = (e) => {
+		setPos({
+			x: e.clientX,
+			y: e.clientY
+		})
+	}
 
 	// useEffect(() => {
 	// 	console.log('render')
@@ -19,6 +28,14 @@ export default function App() {
 		.then(json => setData(json))
 	}, [type])
 
+	useEffect(() => {
+		console.log('ComponentDidMount')
+
+		window.addEventListener('mousemove', e => position(e))
+
+		return window.removeEventListener('mousemove', e => position(e))
+	}, [])
+
 	return (
 		<div className="App mt-md-5">
 
@@ -27,7 +44,8 @@ export default function App() {
 			<button onClick={() => setType( 'todos' )} className="btn btn-success mr-md-3">Todo</button>
 			<button onClick={() => setType( 'posts' )} className="btn btn-danger">Посты</button>
 
-			<pre>{JSON.stringify(data, null, 2)}</pre>
+			{/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+			<pre>{JSON.stringify(pos, null, 2)}</pre>
 		</div>
 	)
 }
