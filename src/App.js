@@ -19,6 +19,8 @@ function App() {
 		renderCounter.current++
 	})
 
+	const focus = () => {inputRef.current.focus()}
+
 	// Следующие 4 строки загоняют программу в бесконченый цикл
 	// const [renderCounter, setRenderCounter] = useState(1)
 	// useEffect(() => {
@@ -30,6 +32,7 @@ function App() {
 			<h1>Страница рендерилась {renderCounter.current} раз</h1>
 			{/* <input value={inputValue} onChange={e => setInputValue(e.target.value)} /> */}
 			<input ref={inputRef} value={inputValue} onChange={e => setInputValue(e.target.value)} />
+			<button onClick={focus} className="btn btn-success">Фокус</button>
 		</div>
 	)
 }
