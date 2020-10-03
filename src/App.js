@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react'
+// useRef - для сохранения чего-либо между рендерами, если мы не хотим перерисовывать страницу
+
+import React, { useState, useEffect, useRef } from 'react'
 
 import './App.css'
 
-let renderCounter = 1
+// let renderCounter = 1 
 
 function App() {
 	const [inputValue, setInputValue] = useState('initial')
+	const renderCounter = useRef(1)
 
 	useEffect(() => {
-		renderCounter++
+		renderCounter.current++
 	})
 
 	// Следующие 4 строки загоняют программу в бесконченый цикл
@@ -19,7 +22,7 @@ function App() {
 
 	return (
 		<div>
-			<h1>Страница рендерилась {renderCounter} раз</h1>
+			<h1>Страница рендерилась {renderCounter.current} раз</h1>
 			<input value={inputValue} onChange={e => setInputValue(e.target.value)} />
 		</div>
 	)
