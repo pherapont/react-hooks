@@ -1,45 +1,35 @@
-// useRef - для сохранения чего-либо между рендерами, если мы не хотим перерисовывать страницу
-// useRef - для создания ссылок на DOM-элементы
-// useRef - для программного создания фокуса на элементах DOM
-// useRef - для сохранения предыдущего состояния useState
+//  useMemo кеширует те значения, которые не изменились и не вызывает их функции при новом рендере
+//  useMemo кеширует объекты, т.к. новый рендер создает новый объект, даже с теми же значениями
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, {useState, useMemo} from 'react'
 
 import './App.css'
 
-// let renderCounter = 1 
+function complexCompute(num) {
+	let i = 0
+	while (i<100000000) i++
+	console.log('Complex computed')
+	return num * 2
+}
 
-function App() {
-	const [inputValue, setInputValue] = useState('initial')
-	const renderCounter = useRef(1)
-	const inputRef = useRef(null)
-	const prevState = useRef('')
+const App = () => {
+	const [number, setNumber] = useState(42)
+	const [colored, setColored] = useState(false)
 
-	inputRef.current && console.log(inputRef.current.value)
+	const computed = useMemo(() => {
+		return complexCompute( number )
+	}, [number]) 
 
-	useEffect(() => {
-		renderCounter.current++
-	})
-
-	useEffect(() => {
-		prevState.current = inputValue
-	})
-
-	const focus = () => {inputRef.current.focus()}
-
-	// Следующие 4 строки загоняют программу в бесконченый цикл
-	// const [renderCounter, setRenderCounter] = useState(1)
-	// useEffect(() => {
-	// 	setRenderCounter(prev => prev + 1)
-	// }) 
-
+	const styles = useMemo(() => ({
+			color: colored ? 'red' : 'darkblue'
+		}), [colored]) 
+	
 	return (
-		<div>
-			<h1>Страница рендерилась {renderCounter.current} раз</h1>
-			<h2>Предыдущее состояние input {prevState.current}</h2>
-			{/* <input value={inputValue} onChange={e => setInputValue(e.target.value)} /> */}
-			<input ref={inputRef} value={inputValue} onChange={e => setInputValue(e.target.value)} />
-			<button onClick={focus} className="btn btn-success">Фокус</button>
+		<div className="App">
+			<h1 style={styles}>Вычисляемое свойство {computed}</h1>
+			<button className="btn btn-success" onClick={() => setNumber(prev=>prev+1)}>Добавить</button>
+			<button className="btn btn-info" onClick={() => setNumber(prev=>prev-1)}>Удалить</button>
+			<button className="btn btn-danger" onClick={() => setColored(prev=>!prev)}>Изменить</button>
 		</div>
 	)
 }
